@@ -25,6 +25,8 @@ public class UpdateNote extends BaseController {
             registry.getNoteService().updateNote(id, noteDto);
         } catch (DtoException | NoSuchElementException e) {
             return ResponseTool.badRequest(resp);
+        } catch (RepoException e) {
+            return ResponseTool.serverError(resp);
         }
         return ResponseTool.noContent(resp);
     }

@@ -13,7 +13,7 @@ public class NoteServiceImpl implements NoteService {
         this.repo = repo;
     }
 
-    public List<NoteDto> getNotes() {
+    public List<NoteDto> getNotes() throws RepoException {
         List<Note> notes = repo.getAllNotes();
         List<NoteDto> dtos = new ArrayList<>();
         for (Note note : notes) {
@@ -22,7 +22,7 @@ public class NoteServiceImpl implements NoteService {
         return dtos;
     }
 
-    static LocalDateTime parseDatetime(String s) throws DtoException {
+    static LocalDateTime parseDatetime(String s) throws DtoException, RepoException {
         try {
             LocalDateTime dt = LocalDateTime.parse(s);
             return dt;
@@ -31,20 +31,21 @@ public class NoteServiceImpl implements NoteService {
         }
     }
 
-    public int addNote(NoteDto dto) throws DtoException {
+    public int addNote(NoteDto dto) throws DtoException, RepoException {
         return repo.addNote(dto.text, parseDatetime(dto.datetime));
     }
 
-    public void deleteNote(int id) {
+    public void deleteNote(int id) throws RepoException {
         repo.deleteNote(id);
     }
 
-    public NoteDto getNote(int id) throws NoSuchElementException {
+    public NoteDto getNote(int id) throws NoSuchElementException, RepoException {
         Note note = repo.getNote(id);
         return new NoteDto(note);
     }
 
-    public void updateNote(int id, NoteDto dto) throws DtoException, NoSuchElementException {
+    public void updateNote(int id, NoteDto dto)
+        throws DtoException, NoSuchElementException, RepoException {
         if (dto.text != null) {
             repo.updateNoteText(id, dto.text);
         }

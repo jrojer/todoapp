@@ -1,5 +1,5 @@
 package todoapp;
 
-public class AppConf{
-    static final DataRepository repo = new InMemoryDataRepo();
+public class AppConf {
+    public static DataRepository repo = new JooqDataRepo();
 }

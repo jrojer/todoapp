@@ -19,7 +19,11 @@ public class DeleteNote extends BaseController {
     @Override
     public Object handle(Request req, Response resp) {
         int id = Integer.valueOf(req.params(":id"));
-        registry.getNoteService().deleteNote(id);
+        try {
+            registry.getNoteService().deleteNote(id);
+        } catch (RepoException e) {
+            return ResponseTool.serverError(resp);
+        }
         return ResponseTool.noContent(resp);
     }
 }

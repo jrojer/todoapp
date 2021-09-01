@@ -50,4 +50,8 @@ public class Logger {
     public static void warn(String str) {
         logger.warn(str);
     }
+
+    public static void error(String str) {
+        logger.error(str);
+    }
 }

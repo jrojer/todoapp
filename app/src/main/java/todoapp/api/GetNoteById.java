@@ -25,6 +25,8 @@ public class GetNoteById extends BaseController {
             note = registry.getNoteService().getNote(id);
         } catch (NoSuchElementException e) {
             return ResponseTool.notFound(resp);
+        } catch (RepoException e){
+            return ResponseTool.serverError(resp);
         }
         return ResponseTool.ok(resp, JsonTool.serialize(note));
     }

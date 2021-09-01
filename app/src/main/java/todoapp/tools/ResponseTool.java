@@ -34,4 +34,9 @@ public class ResponseTool {
         response.status(400);
         return "";
     }
+
+    public static String serverError(Response response) {
+        response.status(500);
+        return "";
+    }
 }

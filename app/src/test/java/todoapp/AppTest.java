@@ -37,7 +37,7 @@ class AppTest {
         service.addNote(note1);
         service.addNote(note2);
         service.addNote(note3);
-        assertTrue(service.getNotes().equals(List.of(note1, note2, note3)));
+        assertEquals(service.getNotes(),List.of(note1, note2, note3));
     }
 
     @Test

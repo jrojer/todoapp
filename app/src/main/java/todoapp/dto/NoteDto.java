@@ -28,4 +28,9 @@ public class NoteDto {
         NoteDto o = (NoteDto) obj;
         return o.text.equals(text) && o.datetime.equals(datetime);
     }
+
+    @Override
+    public String toString(){
+        return "<" + text + " | " + datetime + " | " + done + ">";
+    }
 }

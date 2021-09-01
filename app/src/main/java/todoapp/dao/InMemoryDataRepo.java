@@ -12,7 +12,6 @@ import java.util.NoSuchElementException;
 */
 
 public class InMemoryDataRepo implements DataRepository {
-    // private List<Note> notes;
     private Map<Integer, Note> notes;
     private int autoincrementId;
 

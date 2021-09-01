@@ -2,10 +2,13 @@ package todoapp;
 
 public class App {
     public static void main(String[] args) {
-
         /*
-        */
-        new GetAllNotes().start();
+            Start the controllers
+         */
         new AddNote().start();
+        new DeleteNote().start();
+        new GetAllNotes().start();
+        new GetNoteById().start();
+        new UpdateNote().start();
     }
 }

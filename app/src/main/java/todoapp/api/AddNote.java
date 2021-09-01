@@ -24,6 +24,8 @@ public class AddNote extends BaseController {
             newResourseId = registry.getNoteService().addNote(newNote);
         } catch (DtoException e) {
             return ResponseTool.badRequest(resp);
+        } catch (RepoException e){
+            return ResponseTool.serverError(resp);
         }
         return ResponseTool.created(resp, UriConf.getNotesUri(newResourseId));
     }

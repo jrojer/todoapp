@@ -18,7 +18,11 @@ public class GetAllNotes extends BaseController {
 
     @Override
     public Object handle(Request req, Response resp) {
-        List<NoteDto> notes = registry.getNoteService().getNotes();
-        return ResponseTool.ok(resp, JsonTool.serialize(notes));
+        try {
+            List<NoteDto> notes = registry.getNoteService().getNotes();
+            return ResponseTool.ok(resp, JsonTool.serialize(notes));
+        } catch (RepoException e) {
+            return ResponseTool.serverError(resp);
+        }
     }
 }

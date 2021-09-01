@@ -6,6 +6,18 @@
  * User Manual available at https://docs.gradle.org/7.1.1/userguide/building_java_projects.html
  */
 
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'org.jooq:jooq-codegen:3.15.2'
+        classpath 'org.postgresql:postgresql:42.2.23.jre7'
+    }
+}
+
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
@@ -31,8 +43,7 @@ dependencies {
     implementation 'org.jooq:jooq-codegen:3.15.1'
 
     // Postgres driver
-    //implementation 'postgresql:postgresql:9.1-901-1.jdbc4'
-    //implementation files('libs/postgresql-42.2.23.jar')
+    implementation 'org.postgresql:postgresql:42.2.23.jre7'
     
     // Connection pooling 
     implementation 'com.zaxxer:HikariCP:5.0.0'
@@ -61,10 +72,47 @@ jar {
   }  
 }
 
-
 test {
     useJUnitPlatform()
     testLogging {
         events "passed", "skipped", "failed"
+    }
+}
+
+import org.jooq.codegen.GenerationTool
+import org.jooq.meta.jaxb.*
+
+tasks.register('generate') {
+    doLast {
+        def props = new Properties()
+        file("db.properties").withInputStream { 
+            stream -> props.load(stream) 
+        }
+
+        def url             = props.getProperty('url')
+        def user            = props.getProperty('user')
+        def password        = props.getProperty('password')
+        def directoryPath   = file('src/main/java').absolutePath
+        def packageName     = 'todoapp.generated'
+
+        GenerationTool.generate(new Configuration()
+            .withJdbc(new Jdbc()
+                .withDriver('org.postgresql.Driver')
+                .withUrl(url)
+                .withUser(user)
+                .withPassword(password))
+            .withGenerator(new Generator()
+                .withDatabase(new Database()
+                    .withExcludes("dblink_get_notify|ts.*")
+                    .withInputSchema("public"))
+                .withGenerate(new Generate()
+                    .withPojos(true)
+                    .withDaos(true))
+                .withTarget(new Target()
+                    .withPackageName(packageName)
+                    .withDirectory(directoryPath)
+                    )
+                )
+            )
     }
 }
